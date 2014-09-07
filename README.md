@@ -21,61 +21,7 @@ Etapa final:
 2. ShiftRows
 3. AddRoundKey — con la última subclave
 ------------------------------------
-S-Caja
-| 0 1 2 3 4 5 6 7 8 9 a b c d e f
----|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-00 |63 7c 77 7b f2 6b 6f c5 30 01 67 2b fe d7 ab 76
-10 |ca 82 c9 7d fa 59 47 f0 ad d4 a2 af 9c a4 72 c0
-20 |b7 fd 93 26 36 3f f7 cc 34 a5 e5 f1 71 d8 31 15
-30 |04 c7 23 c3 18 96 05 9a 07 12 80 e2 eb 27 b2 75
-40 |09 83 2c 1a 1b 6e 5a a0 52 3b d6 b3 29 e3 2f 84
-50 |53 d1 00 ed 20 fc b1 5b 6a cb be 39 4a 4c 58 cf
-60 |d0 ef aa fb 43 4d 33 85 45 f9 02 7f 50 3c 9f a8
-70 |51 a3 40 8f 92 9d 38 f5 bc b6 da 21 10 ff f3 d2
-80 |cd 0c 13 ec 5f 97 44 17 c4 a7 7e 3d 64 5d 19 73
-90 |60 81 4f dc 22 2a 90 88 46 ee b8 14 de 5e 0b db
-a0 |e0 32 3a 0a 49 06 24 5c c2 d3 ac 62 91 95 e4 79
-b0 |e7 c8 37 6d 8d d5 4e a9 6c 56 f4 ea 65 7a ae 08
-c0 |ba 78 25 2e 1c a6 b4 c6 e8 dd 74 1f 4b bd 8b 8a
-d0 |70 3e b5 66 48 03 f6 0e 61 35 57 b9 86 c1 1d 9e
-e0 |e1 f8 98 11 69 d9 8e 94 9b 1e 87 e9 ce 55 28 df
-f0 |8c a1 89 0d bf e6 42 68 41 99 2d 0f b0 54 bb 16
-Matriz para multiplicación en MixColumn
-2 3 1 1
-1 2 3 1
-1 1 2 3
-3 1 1 2
-Ejemplo implementación de Mixcolumn:UNIVERSIDAD DE LA LAGUNA
-Departamento de Estadística, Investigación Operativa y Computación
-void gmix_column(unsigned char *r) {
-unsigned char a[4];
-unsigned char b[4];
-unsigned char c;
-unsigned char h;
-/* The array 'a' is simply a copy of the input array 'r'
-* The array 'b' is each element of the array 'a' multiplied by 2
-* in Rijndael's Galois field
-* a[n] ^ b[n] is element n multiplied by 3 in Rijndael's Galois field */
-for(c=0;c<4;c++) {
-a[c] = r[c];
-h = r[c] & 0x80; /* hi bit */
-b[c] = r[c] << 1;
-if(h == 0x80)
-b[c] ^= 0x1b; /* Rijndael's Galois field */
-}
-r[0] = b[0] ^ a[3] ^ a[2] ^ b[1] ^ a[1]; /* 2 * a0 + a3 + a2 + 3 * a1 */
-r[1] = b[1] ^ a[0] ^ a[3] ^ b[2] ^ a[2]; /* 2 * a1 + a0 + a3 + 3 * a2 */
-r[2] = b[2] ^ a[1] ^ a[0] ^ b[3] ^ a[3]; /* 2 * a2 + a1 + a0 + 3 * a3 */
-r[3] = b[3] ^ a[2] ^ a[1] ^ b[0] ^ a[0]; /* 2 * a3 + a2 + a1 + 3 * a0 */
-}
-Constantes de iteración para Expansión de claves: 32 bits correspondientes a: x iteración-1 , seguido de 24 bits nulos.
-2. El programa debe solicitar:
-• Clave (16 bytes en hexadecimal)
-• Bloque de Texto Original (16 bytes en hexadecimal)
-Debe devolver:
-• Las 10 subclaves
-• El Estado resultado de cada iteración
-• Bloque de Texto Cifrado (16 bytes en hexadecimal)
+
 Ejemplo:
 Clave: 000102030405060708090a0b0c0d0e0f
 Bloque de Texto Original: 00112233445566778899aabbccddeeff
